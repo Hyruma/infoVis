@@ -10,8 +10,8 @@ function behaviour(){
 	var img = svg.append("svg:image")
 	    .attr("xlink:href", "images/butterfly.svg")
 	    .attr("id", "butterfly")
-	    .attr("width", 105)
-	    .attr("height", 105)
+	    .attr("width", 100)
+	    .attr("height", 100)
 	    .attr("transX", maxW/2)
 	    .attr("transY", maxH/2)
 	    .attr("orientation", 0)
@@ -33,6 +33,8 @@ function behaviour(){
 		var y= parseInt(img.attr("transY"));
 		var x= parseInt(img.attr("transX"));
 		var z= parseInt(img.attr("orientation"));
+		var w= parseInt(img.attr("width"))/2;
+		var h= parseInt(img.attr("height"))/2;
 
 		if (y<0){
 			y = maxH -speed + y;
@@ -42,7 +44,7 @@ function behaviour(){
 			y-= speed;
 		else
 			z=0;
-		img.transition().duration("100").attr("transform", "translate("+x+","+y+") rotate("+z+")");
+		img.transition().duration("1000").attr("transform", "translate("+x+","+y+") rotate("+z+","+w+","+h+")");
 		}
 		img.attr("transY", y);
 		img.attr("orientation", z);
@@ -52,6 +54,8 @@ function behaviour(){
 		var y= parseInt(img.attr("transY"));
 		var x= parseInt(img.attr("transX"));
 		var z= parseInt(img.attr("orientation"));
+		var w= parseInt(img.attr("width"))/2;
+		var h= parseInt(img.attr("height"))/2;
 
 		if (y>maxH){
 			y = speed + y -maxH;
@@ -61,7 +65,7 @@ function behaviour(){
 			y+= speed;
 		else
 			z=180;
-		img.transition().duration("100").attr("transform", "translate("+x+","+y+") rotate("+z+")");
+		img.transition().duration("1000").attr("transform", "translate("+x+","+y+") rotate("+z+","+w+","+h+")");
 		}
 		img.attr("transY", y);
 		img.attr("orientation", z);
@@ -71,6 +75,8 @@ function behaviour(){
 		var y= parseInt(img.attr("transY"));
 		var x= parseInt(img.attr("transX"));
 		var z= parseInt(img.attr("orientation"));
+		var w= parseInt(img.attr("width"))/2;
+		var h= parseInt(img.attr("height"))/2;
 
 		if (x>maxW){
 			x = speed + x -maxW;
@@ -80,7 +86,7 @@ function behaviour(){
 			x+= speed;
 		else
 			z=90;
-		img.transition().duration("100").attr("transform", "translate("+x+","+y+") rotate("+z+")");
+		img.transition().duration("1000").attr("transform", "translate("+x+","+y+") rotate("+z+","+w+","+h+")");
 		}
 		img.attr("transX", x);
 		img.attr("orientation", z);
@@ -90,6 +96,8 @@ function behaviour(){
 		var y= parseInt(img.attr("transY"));
 		var x= parseInt(img.attr("transX"));
 		var z= parseInt(img.attr("orientation"));
+		var w= parseInt(img.attr("width"))/2;
+		var h= parseInt(img.attr("height"))/2;
 
 		if (x<0){
 			x = maxW + x -speed;
@@ -99,7 +107,7 @@ function behaviour(){
 			x-= speed;
 		else
 			z=270;
-		img.transition().duration("100").attr("transform", "translate("+x+","+y+") rotate("+z+")");
+		img.transition().duration("1000").attr("transform", "translate("+x+","+y+") rotate("+z+","+w+","+h+")");
 		}
 		img.attr("transX", x);
 		img.attr("orientation", z);
@@ -107,15 +115,30 @@ function behaviour(){
 
 
 document.getElementById("butterfly").onclick = function(){
-		var radius= maxW + 100;
+		var radius= maxW;
 		var angle = Math.random()*360;
-		var outX = radius * Math.cos(angle);
-		var outY = radius * Math.sin(angle);
 		var img = d3.select("image");
-			img.transition().duration(10000)
-			.attr("transform", "translate("+503+","+367+") rotate("+angle+")")
-			
-			.transition().duration(10000)
+		parseInt(img.attr("transX"))
+		var outX= parseInt(img.attr("transX")) + (radius * Math.cos(angle));
+		var outY= parseInt(img.attr("transY")) - (radius * Math.sin(angle));
+
+		console.log(angle)
+		if(angle>=45 && angle<135)
+			angle=0;
+		else
+		if(angle>=135 && angle<225)
+			angle=270;
+		 else
+
+		if(angle>=225 && angle<315)
+			angle=180;
+		 else
+
+		if(angle>=315 || angle<45) 
+			angle=90;
+		
+		console.log(angle)
+			img.transition().duration("1000")
 			.attr("transform", "translate("+outX+","+outY+") rotate("+angle+")");
 	}
 }
