@@ -9,6 +9,7 @@ function behaviour(){
 
 	var img = svg.append("svg:image")
 	    .attr("xlink:href", "images/butterfly.svg")
+	    .attr("id", "butterfly")
 	    .attr("width", 105)
 	    .attr("height", 105)
 	    .attr("transX", maxW/2)
@@ -16,7 +17,7 @@ function behaviour(){
 	    .attr("orientation", 0)
 	    .attr("transform", "translate("+maxW/2+","+maxH/2+") rotate(0)" );
 
-	document.body.onkeydown = function(e){
+	document.onkeydown = function(e){
 		var img= d3.select("image")
 		if(e.keyCode == '40')
 			moveDown(img);	
@@ -102,5 +103,19 @@ function behaviour(){
 		}
 		img.attr("transX", x);
 		img.attr("orientation", z);
+	}
+
+
+document.getElementById("butterfly").onclick = function(){
+		var radius= maxW + 100;
+		var angle = Math.random()*360;
+		var outX = radius * Math.cos(angle);
+		var outY = radius * Math.sin(angle);
+		var img = d3.select("image");
+			img.transition().duration(10000)
+			.attr("transform", "translate("+503+","+367+") rotate("+angle+")")
+			
+			.transition().duration(10000)
+			.attr("transform", "translate("+outX+","+outY+") rotate("+angle+")");
 	}
 }
