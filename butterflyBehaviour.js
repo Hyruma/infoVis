@@ -12,20 +12,22 @@ function behaviour(){
 	    .attr("id", "butterfly")
 	    .attr("width", 100)
 	    .attr("height", 100)
-	    .attr("transX", maxW/2)
+	    .attr("transX", (maxW*90)/200)
 	    .attr("transY", maxH/2)
 	    .attr("orientation", 0)
-	    .attr("transform", "translate("+maxW/2+","+maxH/2+") rotate(0)" );
+	    .attr("transform", "translate("+(maxW*90)/200+","+maxH/2+") rotate(0)" );
 
 	document.onkeydown = function(e){
+		e = e || window.event;
+
 		var img= d3.select("image")
 		if(e.keyCode == '40')
-			moveDown(img);	
-		else if(e.keyCode == '38')		
+			moveDown(img);
+		else if(e.keyCode == '38')
 			moveUp(img);
-		else if(e.keyCode == '39')		
+		else if(e.keyCode == '39')
 			moveRight(img);
-		else if(e.keyCode == '37')		
+		else if(e.keyCode == '37')
 			moveLeft(img);
 	}
 
@@ -40,11 +42,11 @@ function behaviour(){
 			y = maxH -speed + y;
 			img.attr("transform", "translate("+x+","+y+") rotate("+z+")");
 		} else {
-		if (z==0) 
+		if (z==0)
 			y-= speed;
 		else
 			z=0;
-		img.transition().duration("1000").attr("transform", "translate("+x+","+y+") rotate("+z+","+w+","+h+")");
+		img.transition().duration("100").attr("transform", "translate("+x+","+y+") rotate("+z+","+w+","+h+")");
 		}
 		img.attr("transY", y);
 		img.attr("orientation", z);
@@ -61,11 +63,12 @@ function behaviour(){
 			y = speed + y -maxH;
 			img.attr("transform", "translate("+x+","+y+") rotate("+z+")");
 		} else {
-		if (z==180) 
+		if (z==180)
 			y+= speed;
-		else
+		else {
 			z=180;
-		img.transition().duration("1000").attr("transform", "translate("+x+","+y+") rotate("+z+","+w+","+h+")");
+		}
+		img.transition().duration("100").attr("transform", "translate("+x+","+y+") rotate("+z+","+w+","+h+")");
 		}
 		img.attr("transY", y);
 		img.attr("orientation", z);
@@ -82,11 +85,11 @@ function behaviour(){
 			x = speed + x -maxW;
 			img.attr("transform", "translate("+x+","+y+") rotate("+z+")");
 		} else {
-		if (z==90) 
+		if (z==90)
 			x+= speed;
 		else
 			z=90;
-		img.transition().duration("1000").attr("transform", "translate("+x+","+y+") rotate("+z+","+w+","+h+")");
+		img.transition().duration("100").attr("transform", "translate("+x+","+y+") rotate("+z+","+w+","+h+")");
 		}
 		img.attr("transX", x);
 		img.attr("orientation", z);
@@ -103,42 +106,69 @@ function behaviour(){
 			x = maxW + x -speed;
 			img.attr("transform", "translate("+x+","+y+") rotate("+z+")");
 		} else {
-		if (z==270) 
+		if (z==270)
 			x-= speed;
 		else
 			z=270;
-		img.transition().duration("1000").attr("transform", "translate("+x+","+y+") rotate("+z+","+w+","+h+")");
+		img.transition().duration("100").attr("transform", "translate("+x+","+y+") rotate("+z+","+w+","+h+")");
 		}
 		img.attr("transX", x);
 		img.attr("orientation", z);
 	}
 
 
-document.getElementById("butterfly").onclick = function(){
-		var radius= maxW;
-		var angle = Math.random()*360;
-		var img = d3.select("image");
-		parseInt(img.attr("transX"))
-		var outX= parseInt(img.attr("transX")) + (radius * Math.cos(angle));
-		var outY= parseInt(img.attr("transY")) - (radius * Math.sin(angle));
+document.getElementById("butterfly").onclick = function(e){
+				e = e || window.event;
 
-		console.log(angle)
-		if(angle>=45 && angle<135)
-			angle=0;
-		else
-		if(angle>=135 && angle<225)
-			angle=270;
-		 else
+				var radius= maxW;
+				var angle = Math.random()*360;
+				var angleR= angle * (Math.PI / 180);
+				var img = d3.select("image");
+				var x= parseInt(img.attr("transX"))
+				var y= parseInt(img.attr("transY"))
+				var outX=  (radius * Math.cos(angleR));
+				var outY=  (radius * Math.sin(angleR));
+			img.attr("xlink:href", "ikshi").
+			img.transition().duration("2000")
+			.attr("transform", "translate("+x+","+y+") rotate("+(90-angle)+",50,50)")
 
-		if(angle>=225 && angle<315)
-			angle=180;
-		 else
+			img.transition().duration("5000").delay(2000)
+			.attr("transform", "translate("+(x+outX)+","+(y-outY)+") rotate("+(90-angle)+",50,50)")
+			//img.attr("xlink:href" "ikshi").
+			.each("end", function(){
 
-		if(angle>=315 || angle<45) 
-			angle=90;
-		
-		console.log(angle)
-			img.transition().duration("1000")
-			.attr("transform", "translate("+outX+","+outY+") rotate("+angle+")");
+			e.target.parentNode.removeChild(element); })
 	}
+
+
+	var tot= 5000/20;
+	var i=0;
+	var vx= outX/tot;
+	var vy= ouY/tot;
+	function repeatMe()
+	            {
+	                x = x + vx;
+	                y = y - vy;
+
+	                ball.transition()
+	                    .duration(10).attr("transform",function(k){
+	                    return "translate("+x+","+y+")";
+	                });
+
+	                i=i+0.2;
+
+	                if(i>t){
+	                    clearInterval(refreshIntervalId);
+	                    ball.transition().delay(100)
+	                        .duration(1000).attr("transform",function(k){
+	                        return "translate("+cannonPosX+","+cannonPosY+")";
+
+	                    });
+	                    lock=!lock;
+
+
+	                }
+	            }
+	            var refreshIntervalId = setInterval(repeatMe,20);
+        }
 }
