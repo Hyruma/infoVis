@@ -13,7 +13,7 @@
 
 		var svg= d3.select("svg");
 		var img = svg.append("svg:image")
-			.attr("xlink:href", "images/butter.svg")
+			.attr("xlink:href", "images/butterfly.svg")
 			.attr("id", "butterfly")
 			.attr("width", 100)
 			.attr("height", 100)
@@ -145,9 +145,9 @@
 			x= x + vx;
 			y= y - vy;
 			if(flipped)
-				img.attr("xlink:href", "images/butter.svg")
+				img.attr("xlink:href", "images/butterfly.svg")
 			else
-				img.attr("xlink:href", "images/butterFlipped.svg")
+				img.attr("xlink:href", "images/butterflyFlipped.svg")
 
 			flipped= !flipped;
 			img.transition().duration("10").delay(2000)
